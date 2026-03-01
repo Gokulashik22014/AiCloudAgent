@@ -2,8 +2,8 @@
 
 import subprocess
 import json
-
-TEMPLATE_PATH = "../infra_templates/ec2_basic"
+import os
+TEMPLATE_PATH = os.path.join(os.getcwd(),"agent\infra_templates\ec2_basic")
 
 def deploy_ec2(instance_type: str, instance_name: str) -> dict:
 

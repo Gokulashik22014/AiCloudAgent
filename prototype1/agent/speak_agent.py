@@ -5,6 +5,8 @@ ollama_model = LiteLlm(
     model="ollama_chat/llama3.2:1b"
 )
 
+google_model='gemini-2.5-flash'
+
 speak_agent = LlmAgent(
     model=ollama_model,
     name="speak_agent",
@@ -31,13 +33,7 @@ Finally give output as
 {
        "instance_type",
        "region",
-       "ami",
-       "count",
-       "volume_size",
-       "volume_type",
-       "name",
-       "tags",
-       "associate_public_ip_address"
+        "instance_name",
 }
  with the user specified values if user has not specified anything about the service give it as null
 """,

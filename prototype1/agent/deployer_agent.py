@@ -7,6 +7,8 @@ ollama_model = LiteLlm(
     model="ollama_chat/llama3.2:1b"
 )
 
+google_model='gemini-2.5-flash'
+
 deployer_agent=LlmAgent(
     model=ollama_model,
     name="deployer_agent",
