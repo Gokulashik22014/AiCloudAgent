@@ -4,6 +4,28 @@ import json
 
 TERRAFORM_PATH=os.path.join(os.getcwd(),"server","curr_terraform")
 
+def initialize_terraform():
+    try:
+        result=subprocess.run(["terraform","init"],check=True,cwd=TERRAFORM_PATH,capture_output=True)
+        return {
+            "status": "success",
+            "stdout": result.stdout,
+            "stderr": result.stderr,
+            "returncode": result.returncode
+        }
+    except subprocess.CalledProcessError as e:
+        return {
+            "status": "terraform_error",
+            "stdout": e.stdout,
+            "stderr": e.stderr,
+            "returncode": e.returncode
+        }
+    except Exception as e:
+        return {
+            "status":"unexpected error",
+            "message":str(e)
+        }
+
 def execute_terraform(plan_name):
     try:
         result = subprocess.run(
@@ -44,10 +66,12 @@ def run_show(plan=""):
             text=True,
             check=True
         )
-        parse_output=json.load(result.stdout)
+        print("running run_show")
+        data=json.loads(result.stdout)
+        print(data)
         return {
             "status": "success",
-            "stdout": parse_output,
+            "stdout": data,
             "stderr": result.stderr,
             "returncode": result.returncode
         }
