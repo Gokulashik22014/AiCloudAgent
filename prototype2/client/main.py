@@ -50,7 +50,7 @@ instance_name
 DEFAULT VALUES
 region = ap-south-1
 instance_type = t2.micro
-ami = ami-123456
+ami = ami-0a14f53a6fe4dfcd1
 instance_name = terraform-instance
 
 WORKFLOW
@@ -60,7 +60,7 @@ WORKFLOW
 4. /terraform/apply
 
 Return JSON only.
-
+if no info is provided use the default values all the variables must be used
 Format:
 
 OUTPUT:
