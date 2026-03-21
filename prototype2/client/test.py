@@ -3,7 +3,7 @@ static_data="""{
   "steps":[
     {
         "step":1,
-        "route":"POST /terraform/apply",
+        "route":"POST /terraform/destroy",
         "input":{
             "plan_name": "tfplan"
         }
