@@ -29,7 +29,7 @@ def initialize_terraform():
 def execute_terraform(plan_name):
     try:
         result = subprocess.run(
-            ["terraform", "apply", plan_name, "-auto-approve"],
+            ["terraform", "apply", "-auto-approve", plan_name],
             cwd=TERRAFORM_PATH,
             capture_output=True,
             text=True,
@@ -57,6 +57,53 @@ def execute_terraform(plan_name):
             "message": str(e)
         }
 
+def destroy_terraform(targets=None):
+    """
+    Destroy Terraform-managed infrastructure.
+
+    Args:
+        targets (list[str] | None): Optional list of specific resource addresses to destroy.
+            Example: ["aws_instance.web", "aws_s3_bucket.assets"]
+            If None, ALL resources in the state will be destroyed.
+    """
+    try:
+        cmd = ["terraform", "destroy", "-auto-approve"]
+
+        # Add a -target flag for each specific resource requested
+        if targets:
+            for resource in targets:
+                cmd.extend(["-target", resource])
+
+        result = subprocess.run(
+            cmd,
+            cwd=TERRAFORM_PATH,
+            capture_output=True,
+            text=True,
+            check=True
+        )
+
+        return {
+            "status": "success",
+            "targets": targets or "all",
+            "stdout": result.stdout,
+            "stderr": result.stderr,
+            "returncode": result.returncode
+        }
+
+    except subprocess.CalledProcessError as e:
+        return {
+            "status": "terraform_error",
+            "targets": targets or "all",
+            "stdout": e.stdout,
+            "stderr": e.stderr,
+            "returncode": e.returncode
+        }
+
+    except Exception as e:
+        return {
+            "status": "unexpected_error",
+            "message": str(e)
+        }
 def run_show(plan=""):
     try:
         result = subprocess.run(
